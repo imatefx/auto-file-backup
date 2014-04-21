@@ -30,20 +30,6 @@
      <widget class="QListWidget" name="logList"/>
     </item>
     <item>
-     <widget class="QTableWidget" name="logTable">
-      <property name="rowCount">
-       <number>1</number>
-      </property>
-      <property name="columnCount">
-       <number>3</number>
-      </property>
-      <row/>
-      <column/>
-      <column/>
-      <column/>
-     </widget>
-    </item>
-    <item>
      <layout class="QHBoxLayout" name="horizontalLayout_2">
       <item>
        <widget class="QPushButton" name="addNewFileButton">

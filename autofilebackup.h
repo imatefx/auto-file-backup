@@ -26,8 +26,6 @@ private slots:
 
 private:
     Ui::AutoFileBackup *ui;
-    int newLogTableRow();
-    void newWatchedFilesTableRow(QString fileName);
     void addLog(QString statusText, QString  value,QString logLevel);
     void addNewWatchFile(QString  file);
 };
