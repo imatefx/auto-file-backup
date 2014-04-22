@@ -24,6 +24,8 @@ private slots:
 
     void fileChanged(const QString & path);
 
+    void on_diffButton_clicked();
+
 private:
     Ui::AutoFileBackup *ui;
     void addLog(QString statusText, QString  value,QString logLevel);

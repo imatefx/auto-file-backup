@@ -4,6 +4,8 @@
 #include <QTime>
 #include <QFileInfo>
 #include <QFileDialog>
+#include "diff_match_patch/diff_match_patch.h"
+
 QFileSystemWatcher *folderMonitor;
 QFileSystemWatcher *fileMonitor;
 QString logLevel = "Debug";
@@ -51,6 +53,8 @@ void AutoFileBackup::on_removeFileButton_clicked()
     watchedFiles = fileMonitor->files();
     ui->watchedFilesList->clear();
     ui->watchedFilesList->addItems(watchedFiles);
+
+
 
 }
 
@@ -118,3 +122,21 @@ void AutoFileBackup::addNewWatchFile(QString file)
 }
 
 
+
+void AutoFileBackup::on_diffButton_clicked()
+{
+    QString fileName1 = QFileDialog::getOpenFileName(this, tr("Open File"),"", tr("Files (*.*)"));
+    QString fileName2 = QFileDialog::getOpenFileName(this, tr("Open File"),"", tr("Files (*.*)"));
+    diff_match_patch dmp;
+
+
+    QList<Patch> df = dmp.patch_make(fileName1,fileName2);
+
+    QStringList stringList;
+    foreach( Patch item, df )
+        stringList.append( item.toString());
+
+    ui->listWidget->addItems(stringList);
+
+
+}
