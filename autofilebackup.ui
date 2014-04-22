@@ -13,85 +13,202 @@
   <property name="windowTitle">
    <string>AutoFileBackup</string>
   </property>
-  <widget class="QTabWidget" name="mainTabWidget">
-   <property name="geometry">
-    <rect>
-     <x>9</x>
-     <y>9</y>
-     <width>651</width>
-     <height>491</height>
-    </rect>
-   </property>
-   <property name="currentIndex">
-    <number>1</number>
-   </property>
-   <widget class="QWidget" name="monitorTabWidgetPage">
-    <attribute name="title">
-     <string>File Monitor</string>
-    </attribute>
-    <layout class="QVBoxLayout" name="verticalLayout">
-     <item>
-      <widget class="QListWidget" name="watchedFilesList"/>
-     </item>
-     <item>
-      <widget class="QListWidget" name="logList"/>
-     </item>
-     <item>
-      <layout class="QHBoxLayout" name="horizontalLayout_2">
+  <layout class="QVBoxLayout" name="verticalLayout_6">
+   <item>
+    <widget class="QTabWidget" name="mainTabWidget">
+     <property name="currentIndex">
+      <number>1</number>
+     </property>
+     <widget class="QWidget" name="monitorTabWidgetPage">
+      <attribute name="title">
+       <string>File Monitor</string>
+      </attribute>
+      <layout class="QVBoxLayout" name="verticalLayout">
        <item>
-        <widget class="QPushButton" name="addNewFileButton">
-         <property name="text">
-          <string>Add File</string>
-         </property>
-        </widget>
+        <widget class="QListWidget" name="watchedFilesList"/>
        </item>
        <item>
-        <widget class="QPushButton" name="removeFileButton">
-         <property name="text">
-          <string>Remove File</string>
-         </property>
-        </widget>
+        <widget class="QListWidget" name="logList"/>
        </item>
        <item>
-        <widget class="QPushButton" name="settingsButton">
-         <property name="text">
-          <string>Settings</string>
-         </property>
-        </widget>
+        <layout class="QHBoxLayout" name="horizontalLayout_2">
+         <item>
+          <widget class="QPushButton" name="addNewFileButton">
+           <property name="text">
+            <string>Add File</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="removeFileButton">
+           <property name="text">
+            <string>Remove File</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="settingsButton">
+           <property name="text">
+            <string>Settings</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
        </item>
       </layout>
-     </item>
-    </layout>
-   </widget>
-   <widget class="QWidget" name="settingsTabWidgetPage">
-    <attribute name="title">
-     <string>Settings </string>
-    </attribute>
-    <widget class="QPushButton" name="diffButton">
-     <property name="geometry">
-      <rect>
-       <x>230</x>
-       <y>410</y>
-       <width>81</width>
-       <height>23</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>diff</string>
-     </property>
+     </widget>
+     <widget class="QWidget" name="settingsTabWidgetPage">
+      <attribute name="title">
+       <string>Settings </string>
+      </attribute>
+      <layout class="QVBoxLayout" name="verticalLayout_3">
+       <item>
+        <layout class="QVBoxLayout" name="verticalLayout_2">
+         <item>
+          <widget class="QTabWidget" name="fileBackupTabWidget">
+           <property name="currentIndex">
+            <number>0</number>
+           </property>
+           <widget class="QWidget" name="fileCopyTab">
+            <attribute name="title">
+             <string>File Copy Backup Settings</string>
+            </attribute>
+            <layout class="QVBoxLayout" name="verticalLayout_5">
+             <item>
+              <layout class="QVBoxLayout" name="verticalLayout_4">
+               <item>
+                <layout class="QFormLayout" name="formLayout">
+                 <property name="fieldGrowthPolicy">
+                  <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
+                 </property>
+                 <item row="1" column="0">
+                  <widget class="QLabel" name="label">
+                   <property name="text">
+                    <string>Save to Folder</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="1" column="1">
+                  <layout class="QHBoxLayout" name="horizontalLayout">
+                   <item>
+                    <widget class="QLineEdit" name="destinationDirLineEdit">
+                     <property name="enabled">
+                      <bool>false</bool>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QPushButton" name="destinationDirBrowseButton">
+                     <property name="enabled">
+                      <bool>false</bool>
+                     </property>
+                     <property name="text">
+                      <string>Browse</string>
+                     </property>
+                    </widget>
+                   </item>
+                  </layout>
+                 </item>
+                 <item row="3" column="0">
+                  <widget class="QLabel" name="label_2">
+                   <property name="text">
+                    <string>File prefix string</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="3" column="1">
+                  <widget class="QLineEdit" name="filePrefixLineEdit"/>
+                 </item>
+                 <item row="4" column="0">
+                  <widget class="QLabel" name="label_3">
+                   <property name="text">
+                    <string>File suffix string</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="4" column="1">
+                  <widget class="QLineEdit" name="fileSuffixLineEdit"/>
+                 </item>
+                 <item row="5" column="0">
+                  <widget class="QLabel" name="label_4">
+                   <property name="text">
+                    <string>Date Time Settings</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="6" column="0">
+                  <widget class="QCheckBox" name="suffixDateTimeCheckBox">
+                   <property name="text">
+                    <string>Suffix date and time</string>
+                   </property>
+                   <property name="checked">
+                    <bool>true</bool>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="7" column="0">
+                  <widget class="QLabel" name="label_5">
+                   <property name="text">
+                    <string>Date and time format</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="7" column="1">
+                  <widget class="QLineEdit" name="suffixDateTimeFormatLineEdit">
+                   <property name="text">
+                    <string>dd-MM-yyyy-hh-mm-ss</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="0" column="0">
+                  <widget class="QCheckBox" name="saveToDiffDirCheckBox">
+                   <property name="text">
+                    <string>Save file to different folder</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="2" column="0">
+                  <widget class="QLabel" name="label_6">
+                   <property name="text">
+                    <string>Save backup files to sub folder</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="2" column="1">
+                  <widget class="QLineEdit" name="saveToSubDirLineEdit"/>
+                 </item>
+                 <item row="8" column="0">
+                  <widget class="QLabel" name="label_7">
+                   <property name="text">
+                    <string>Suffix after date and time</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="8" column="1">
+                  <widget class="QLineEdit" name="suffixAfterDateTimeLineEdit"/>
+                 </item>
+                </layout>
+               </item>
+              </layout>
+             </item>
+             <item>
+              <widget class="QDialogButtonBox" name="fileCopyButtonBox">
+               <property name="standardButtons">
+                <set>QDialogButtonBox::Apply|QDialogButtonBox::Discard|QDialogButtonBox::Reset</set>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+          </widget>
+         </item>
+        </layout>
+       </item>
+      </layout>
+     </widget>
     </widget>
-    <widget class="QListWidget" name="listWidget">
-     <property name="geometry">
-      <rect>
-       <x>30</x>
-       <y>20</y>
-       <width>601</width>
-       <height>361</height>
-      </rect>
-     </property>
-    </widget>
-   </widget>
-  </widget>
+   </item>
+  </layout>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <resources/>

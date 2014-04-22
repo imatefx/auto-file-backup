@@ -65,6 +65,37 @@ void AutoFileBackup::fileChanged(const QString &path)
     QFileInfo watchedFile(path);
     if (watchedFile.exists())
     {
+        QString saveDir;
+        QString prefixString;
+        QString suffixString;
+        bool suffixDate;
+        QString suffixDateFormat;
+        QString suffixAfterDateTime;
+        if (ui->saveToDiffDirCheckBox->checkState() == Qt::Checked)
+        {
+            saveDir=ui->destinationDirLineEdit->text();
+        }
+        else if (ui->saveToDiffDirCheckBox->checkState() == Qt::Unchecked)
+        {
+            if (ui->saveToSubDirLineEdit->text() == NULL || ui->saveToSubDirLineEdit->text().trimmed() == "" )
+            {
+                saveDir= watchedFile.absoluteDir().path();
+            }
+            else
+            {
+                saveDir= watchedFile.absoluteDir().path() + QDir::separator() + ui->saveToSubDirLineEdit->text();
+            }
+        }
+        prefixString = ui->filePrefixLineEdit->text();
+        suffixString = ui->fileSuffixLineEdit->text();
+        suffixDate =  ui->suffixDateTimeCheckBox->checkState();
+
+        suffixDateFormat = ui->suffixDateTimeFormatLineEdit->text();
+        suffixAfterDateTime = ui->suffixAfterDateTimeLineEdit->text();
+
+        copyFileAsBackup(path,saveDir,prefixString,suffixString,suffixDate,suffixDateFormat,suffixAfterDateTime);
+
+
 //        addLog("File exists",path,logLevel);
     }
     else{
@@ -121,22 +152,49 @@ void AutoFileBackup::addNewWatchFile(QString file)
     ui->watchedFilesList->addItems(watchedFiles);
 }
 
-
-
-void AutoFileBackup::on_diffButton_clicked()
+bool AutoFileBackup::copyFileAsBackup(QString sourceFile,QString destinationDir,QString prefixString, QString suffixString, bool suffixDate, QString suffixDateFormat, QString suffixAfterDateTime)
 {
-    QString fileName1 = QFileDialog::getOpenFileName(this, tr("Open File"),"", tr("Files (*.*)"));
-    QString fileName2 = QFileDialog::getOpenFileName(this, tr("Open File"),"", tr("Files (*.*)"));
-    diff_match_patch dmp;
+    QFileInfo fileInfo(sourceFile);
+    QString suffixDateString ;
+    if(suffixDate==true)
+    {
+        suffixDateString = QDateTime::currentDateTime().toString(suffixDateFormat);
+    }
+    else
+    {
+        suffixDateString="";
+    }
+    QString destinationFile = destinationDir + QDir::separator() + prefixString + fileInfo.baseName() + suffixString + suffixDateString + suffixAfterDateTime + "." + fileInfo.completeSuffix() ;
+    bool result = QFile::copy(sourceFile, destinationFile);
+    return result;
+}
 
 
-    QList<Patch> df = dmp.patch_make(fileName1,fileName2);
+void AutoFileBackup::on_saveToDiffDirCheckBox_stateChanged(int arg1)
+{
 
-    QStringList stringList;
-    foreach( Patch item, df )
-        stringList.append( item.toString());
+    if(arg1==0)
+    {
+        ui->saveToSubDirLineEdit->setEnabled(true);
+        ui->destinationDirLineEdit->setEnabled(false);
+        ui->destinationDirBrowseButton->setEnabled(false);
+    }
+    else if(arg1==2)
+    {
+        ui->saveToSubDirLineEdit->setEnabled(false);
+        ui->destinationDirLineEdit->setEnabled(true);
+        ui->destinationDirBrowseButton->setEnabled(true);
+    }
+}
 
-    ui->listWidget->addItems(stringList);
-
-
+void AutoFileBackup::on_suffixDateTimeCheckBox_stateChanged(int arg1)
+{
+    if(arg1==0)
+    {
+        ui->suffixDateTimeFormatLineEdit->setEnabled(false);
+    }
+    else if(arg1==2)
+    {
+        ui->suffixDateTimeFormatLineEdit->setEnabled(true);
+    }
 }
