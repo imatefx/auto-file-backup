@@ -5,6 +5,8 @@
 #include <QFileInfo>
 #include <QFileDialog>
 #include "diff_match_patch/diff_match_patch.h"
+#include "filecopysettings.h"
+#include <QSettings>
 
 QFileSystemWatcher *folderMonitor;
 QFileSystemWatcher *fileMonitor;
@@ -24,6 +26,13 @@ AutoFileBackup::AutoFileBackup(QWidget *parent) :
 
     connect(folderMonitor, SIGNAL(directoryChanged(const QString &)), this,
             SLOT(directoryChanged(const QString &)));
+
+    QCoreApplication::setOrganizationName("Stalin");
+//    QCoreApplication::setOrganizationDomain("mysoft.com");
+    QCoreApplication::setApplicationName("Auto File Backup");
+
+    loadFileCopySettings();
+
 }
 
 AutoFileBackup::~AutoFileBackup()
@@ -65,6 +74,7 @@ void AutoFileBackup::fileChanged(const QString &path)
     QFileInfo watchedFile(path);
     if (watchedFile.exists())
     {
+        bool isSaveDirCorrect;
         QString saveDir;
         QString prefixString;
         QString suffixString;
@@ -84,6 +94,11 @@ void AutoFileBackup::fileChanged(const QString &path)
             else
             {
                 saveDir= watchedFile.absoluteDir().path() + QDir::separator() + ui->saveToSubDirLineEdit->text();
+                QFileInfo subDirChecker(saveDir);
+                if(!subDirChecker.exists())
+                {
+                    subDirChecker.dir().mkdir(saveDir);
+                }
             }
         }
         prefixString = ui->filePrefixLineEdit->text();
@@ -93,7 +108,10 @@ void AutoFileBackup::fileChanged(const QString &path)
         suffixDateFormat = ui->suffixDateTimeFormatLineEdit->text();
         suffixAfterDateTime = ui->suffixAfterDateTimeLineEdit->text();
 
-        copyFileAsBackup(path,saveDir,prefixString,suffixString,suffixDate,suffixDateFormat,suffixAfterDateTime);
+        if(isSaveDirCorrect==true)
+        {
+            copyFileAsBackup(path,saveDir,prefixString,suffixString,suffixDate,suffixDateFormat,suffixAfterDateTime);
+        }
 
 
 //        addLog("File exists",path,logLevel);
@@ -197,4 +215,72 @@ void AutoFileBackup::on_suffixDateTimeCheckBox_stateChanged(int arg1)
     {
         ui->suffixDateTimeFormatLineEdit->setEnabled(true);
     }
+}
+
+void AutoFileBackup::on_destinationDirBrowseButton_clicked()
+{
+    QString saveDir = QFileDialog::getExistingDirectory(this, tr("Open Directory"),"",
+                                                 QFileDialog::ShowDirsOnly
+                                                 | QFileDialog::DontResolveSymlinks);
+    ui->destinationDirLineEdit->setText(saveDir);
+}
+
+void AutoFileBackup::on_fileCopyButtonBox_clicked(QAbstractButton *button)
+{
+    if (button->text() == tr("Apply"))
+        saveFileCopySettings();
+    else if (button->text() == tr("Discard"))
+        loadFileCopySettings();
+}
+
+void AutoFileBackup::resetFileCopySettings()
+{
+    ui->destinationDirBrowseButton->setEnabled(false);
+    ui->destinationDirLineEdit->setText("");
+    ui->filePrefixLineEdit->setText("");
+    ui->fileSuffixLineEdit->setText("");
+    ui->saveToDiffDirCheckBox->setCheckState(Qt::Unchecked);
+    ui->saveToSubDirLineEdit->setText("");
+    ui->suffixAfterDateTimeLineEdit->setText("");
+    ui->suffixDateTimeCheckBox->setCheckState(Qt::Checked);
+    ui->suffixDateTimeFormatLineEdit->setText("dd-MM-yyyy-hh-mm-ss");
+}
+
+void AutoFileBackup::saveFileCopySettings()
+{
+    FileCopySettings fcSettings;
+
+    if (ui->saveToDiffDirCheckBox->isChecked())
+    {
+        fcSettings.setSaveToDiffDir(true);
+        fcSettings.setDestinationDir(ui->destinationDirLineEdit->text());
+    }
+    else
+    {
+        fcSettings.setSaveToDiffDir(false);
+        fcSettings.setSaveToSubDir(ui->saveToSubDirLineEdit->text());
+    }
+    fcSettings.setPrefixString(ui->filePrefixLineEdit->text());
+    fcSettings.setSuffixString(ui->fileSuffixLineEdit->text());
+    fcSettings.setSuffixDate(ui->suffixDateTimeCheckBox->isChecked());
+    fcSettings.setSuffixDateFormat(ui->suffixDateTimeFormatLineEdit->text());
+    fcSettings.setSuffixAfterDateTime(ui->suffixAfterDateTimeLineEdit->text());
+
+    fcSettings.saveSettings();
+
+}
+
+void AutoFileBackup::loadFileCopySettings()
+{
+    FileCopySettings fcSettings;
+    fcSettings.readSettings();
+
+    ui->saveToDiffDirCheckBox->setChecked(fcSettings.getSaveToDiffDir());
+    ui->destinationDirLineEdit->setText(fcSettings.getDestinationDir());
+    ui->saveToSubDirLineEdit->setText(fcSettings.getSaveToSubDir());
+    ui->filePrefixLineEdit->setText(fcSettings.getPrefixString());
+    ui->fileSuffixLineEdit->setText(fcSettings.getSuffixString());
+    ui->suffixDateTimeCheckBox->setChecked(fcSettings.getSuffixDate());
+    ui->suffixDateTimeFormatLineEdit->setText(fcSettings.getSuffixDateFormat());
+    ui->suffixAfterDateTimeLineEdit->setText(fcSettings.getSuffixAfterDateTime());
 }

@@ -95,6 +95,9 @@
                      <property name="enabled">
                       <bool>false</bool>
                      </property>
+                     <property name="readOnly">
+                      <bool>true</bool>
+                     </property>
                     </widget>
                    </item>
                    <item>
@@ -194,7 +197,7 @@
              <item>
               <widget class="QDialogButtonBox" name="fileCopyButtonBox">
                <property name="standardButtons">
-                <set>QDialogButtonBox::Apply|QDialogButtonBox::Discard|QDialogButtonBox::Reset</set>
+                <set>QDialogButtonBox::Apply|QDialogButtonBox::Discard</set>
                </property>
               </widget>
              </item>

@@ -14,9 +14,11 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
         autofilebackup.cpp \
-    diff_match_patch/diff_match_patch.cpp
+    diff_match_patch/diff_match_patch.cpp \
+    filecopysettings.cpp
 
 HEADERS  += autofilebackup.h \
-    diff_match_patch/diff_match_patch.h
+    diff_match_patch/diff_match_patch.h \
+    filecopysettings.h
 
 FORMS    += autofilebackup.ui
