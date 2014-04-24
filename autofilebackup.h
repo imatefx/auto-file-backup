@@ -35,7 +35,7 @@ private slots:
 
 private:
     Ui::AutoFileBackup *ui;
-    void addLog(QString statusText, QString  value,QString logLevel);
+    void addLog(QString statusText, QString  value);
     void addNewWatchFile(QString  file);
     bool copyFileAsBackup(QString sourceFile, QString destinationDir, QString prefixString, QString suffixString, bool suffixDate, QString suffixDateFormat, QString suffixAfterDateTime);
     void resetFileCopySettings();

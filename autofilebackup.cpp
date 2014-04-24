@@ -10,7 +10,6 @@
 
 QFileSystemWatcher *folderMonitor;
 QFileSystemWatcher *fileMonitor;
-QString logLevel = "Debug";
 QList<QString> watchedFiles;
 AutoFileBackup::AutoFileBackup(QWidget *parent) :
     QWidget(parent),
@@ -56,7 +55,7 @@ void AutoFileBackup::on_addNewFileButton_clicked()
 void AutoFileBackup::on_removeFileButton_clicked()
 {
     fileMonitor->removePath(ui->watchedFilesList->selectedItems().first()->text());
-    addLog("Remove Watch",ui->watchedFilesList->selectedItems().first()->text(),logLevel);
+    addLog("Remove Watch",ui->watchedFilesList->selectedItems().first()->text());
     // Populate the watchedFiles QList with all the files currently monitoring.
 
     watchedFiles = fileMonitor->files();
@@ -70,11 +69,11 @@ void AutoFileBackup::on_removeFileButton_clicked()
 void AutoFileBackup::fileChanged(const QString &path)
 {
 
-    addLog("File Modified",path,logLevel);
+    addLog("File Modified",path);
     QFileInfo watchedFile(path);
     if (watchedFile.exists())
     {
-        bool isSaveDirCorrect;
+
         QString saveDir;
         QString prefixString;
         QString suffixString;
@@ -97,7 +96,7 @@ void AutoFileBackup::fileChanged(const QString &path)
                 QFileInfo subDirChecker(saveDir);
                 if(!subDirChecker.exists())
                 {
-                   isSaveDirCorrect= subDirChecker.dir().mkdir(saveDir);
+                   subDirChecker.dir().mkdir(saveDir);
                 }
             }
         }
@@ -142,7 +141,7 @@ void AutoFileBackup::directoryChanged(const QString &path)
 
 
 
-void AutoFileBackup::addLog(QString statusText, QString value, QString logLevel)
+void AutoFileBackup::addLog(QString statusText, QString value)
 {
 
     QString item = QTime::currentTime().toString() +":"+statusText +":"+ value;
