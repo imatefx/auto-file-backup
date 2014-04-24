@@ -97,7 +97,7 @@ void AutoFileBackup::fileChanged(const QString &path)
                 QFileInfo subDirChecker(saveDir);
                 if(!subDirChecker.exists())
                 {
-                    subDirChecker.dir().mkdir(saveDir);
+                   isSaveDirCorrect= subDirChecker.dir().mkdir(saveDir);
                 }
             }
         }
@@ -108,10 +108,7 @@ void AutoFileBackup::fileChanged(const QString &path)
         suffixDateFormat = ui->suffixDateTimeFormatLineEdit->text();
         suffixAfterDateTime = ui->suffixAfterDateTimeLineEdit->text();
 
-        if(isSaveDirCorrect==true)
-        {
-            copyFileAsBackup(path,saveDir,prefixString,suffixString,suffixDate,suffixDateFormat,suffixAfterDateTime);
-        }
+        copyFileAsBackup(path,saveDir,prefixString,suffixString,suffixDate,suffixDateFormat,suffixAfterDateTime);
 
 
 //        addLog("File exists",path,logLevel);
