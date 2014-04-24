@@ -4,7 +4,6 @@
 #include <QTime>
 #include <QFileInfo>
 #include <QFileDialog>
-#include "diff_match_patch/diff_match_patch.h"
 #include "filecopysettings.h"
 #include <QSettings>
 
