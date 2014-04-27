@@ -61,12 +61,21 @@ void AutoFileBackup::on_addNewFileButton_clicked()
 void AutoFileBackup::on_removeFileButton_clicked()
 {
 
-    fileMonitor->removePath(ui->watchedFilesTableWidget->currentItem()->text());
-    addLog("Remove Watch",ui->watchedFilesTableWidget->currentItem()->text());
-    // Populate the watchedFiles QList with all the files currently monitoring.
 
-    watchedFiles = fileMonitor->files();
-    ui->watchedFilesTableWidget->removeRow(ui->watchedFilesTableWidget->currentRow());
+    QList<QTableWidgetSelectionRange> ranges = ui->watchedFilesTableWidget->selectedRanges();
+
+
+    int selectedCount = ui->watchedFilesTableWidget->selectedItems().count();
+
+
+    while(ui->watchedFilesTableWidget->selectedItems().count() > 0)
+    {
+        ui->watchedFilesTableWidget->setCurrentItem(ui->watchedFilesTableWidget->selectedItems().last());
+        fileMonitor->removePath(ui->watchedFilesTableWidget->currentItem()->text());
+        addLog("Remove Watch",ui->watchedFilesTableWidget->currentItem()->text());
+        ui->watchedFilesTableWidget->removeRow(ui->watchedFilesTableWidget->currentRow());
+        watchedFiles = fileMonitor->files();
+    }
 
 
 
@@ -309,14 +318,12 @@ void AutoFileBackup::loadFileCopySettings()
 
 void AutoFileBackup::on_watchedFilesTableWidget_dropped(const QMimeData *mimeData)
 {
-    qDebug() << "dropped slot";
     if (mimeData->hasUrls())
     {
         QList<QUrl> urls = mimeData->urls();
         for (int i=0; i<urls.count(); ++i)
         {
             QFileInfo watchfile(urls[i].toLocalFile());
-            qDebug() << watchfile.absoluteFilePath();
             if (watchfile.isFile())
             {
                 addNewWatchFile(watchfile.absoluteFilePath());
