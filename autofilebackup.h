@@ -44,6 +44,7 @@ private:
     void resetFileCopySettings();
     void saveFileCopySettings();
     void loadFileCopySettings();
+    void insertToWatchTable(QString file);
 };
 
 #endif // AUTOFILEBACKUP_H

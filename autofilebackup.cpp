@@ -33,6 +33,11 @@ AutoFileBackup::AutoFileBackup(QWidget *parent) : QWidget(parent), ui(new Ui::Au
 
     loadFileCopySettings();
 
+//    ui->watchedFilesTableWidget->AdjustToContents;
+     ui->watchedFilesTableWidget->setColumnWidth(0,  500);
+     ui->watchedFilesTableWidget->setColumnWidth(1,  100);
+
+
 }
 
 AutoFileBackup::~AutoFileBackup()
@@ -55,13 +60,13 @@ void AutoFileBackup::on_addNewFileButton_clicked()
 
 void AutoFileBackup::on_removeFileButton_clicked()
 {
-    fileMonitor->removePath(ui->watchedFilesList->selectedItems().first()->text());
-    addLog("Remove Watch",ui->watchedFilesList->selectedItems().first()->text());
+
+    fileMonitor->removePath(ui->watchedFilesTableWidget->currentItem()->text());
+    addLog("Remove Watch",ui->watchedFilesTableWidget->currentItem()->text());
     // Populate the watchedFiles QList with all the files currently monitoring.
 
     watchedFiles = fileMonitor->files();
-    ui->watchedFilesList->clear();
-    ui->watchedFilesList->addItems(watchedFiles);
+    ui->watchedFilesTableWidget->removeRow(ui->watchedFilesTableWidget->currentRow());
 
 
 
@@ -159,16 +164,23 @@ bool AutoFileBackup::addNewWatchFile(QString file)
         // Get the corresponding Parent directory of the file and monitor that directory for changes.
         QFileInfo watchedFileInfo(file);
         folderMonitor->addPath(watchedFileInfo.absoluteDir().path());
-//        addLog("Folder watch added",watchedFileInfo.absoluteDir().path(),logLevel);
+
+
+        if(!watchedFiles.contains(file))
+        {
+            insertToWatchTable(file);
+        }
+        addLog("Watching File :" , file);
+
+        watchedFiles = fileMonitor->files();
     }
     else
     {
         return false;
     }
-    ui->watchedFilesList->clear();
+//    ui->watchedFilesList->clear();
     // Populate the watchedFiles QList with all the files currently monitoring.
-    watchedFiles = fileMonitor->files();
-    ui->watchedFilesList->addItems(watchedFiles);
+
     return true;
 }
 
@@ -186,6 +198,14 @@ bool AutoFileBackup::copyFileAsBackup(QString sourceFile,QString destinationDir,
     }
     QString destinationFile = destinationDir + QDir::separator() + prefixString + fileInfo.baseName() + suffixString + suffixDateString + suffixAfterDateTime + "." + fileInfo.completeSuffix() ;
     bool result = QFile::copy(sourceFile, destinationFile);
+    if(result)
+    {
+        addLog("Created File ", destinationFile);
+    }
+    else
+    {
+        addLog("Unable to create file ", destinationFile);
+    }
     return result;
 }
 
@@ -299,14 +319,16 @@ void AutoFileBackup::on_watchedFilesTableWidget_dropped(const QMimeData *mimeDat
             qDebug() << watchfile.absoluteFilePath();
             if (watchfile.isFile())
             {
-                if (addNewWatchFile(watchfile.absoluteFilePath()))
-                {
-                    int row = ui->watchedFilesTableWidget->rowCount();
-                    ui->watchedFilesTableWidget->insertRow(row);
-                    QTableWidgetItem *newItem = new QTableWidgetItem(watchfile.absoluteFilePath());
-                    ui->watchedFilesTableWidget->setItem(row, 0, newItem);
-                }
+                addNewWatchFile(watchfile.absoluteFilePath());
             }
         }
     }
+}
+
+void AutoFileBackup::insertToWatchTable(QString file)
+{
+    int row = ui->watchedFilesTableWidget->rowCount();
+    ui->watchedFilesTableWidget->insertRow(row);
+    QTableWidgetItem *newItem = new QTableWidgetItem(file);
+    ui->watchedFilesTableWidget->setItem(row, 0, newItem);
 }
