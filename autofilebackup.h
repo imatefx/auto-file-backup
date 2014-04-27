@@ -3,6 +3,7 @@
 
 #include <QWidget>
 #include <QAbstractButton>
+#include <QMimeData>
 
 namespace Ui {
 class AutoFileBackup;
@@ -33,10 +34,12 @@ private slots:
 
     void on_fileCopyButtonBox_clicked(QAbstractButton *button);
 
+    void on_watchedFilesTableWidget_dropped(const QMimeData *mimeData);
+
 private:
     Ui::AutoFileBackup *ui;
     void addLog(QString statusText, QString  value);
-    void addNewWatchFile(QString  file);
+    bool addNewWatchFile(QString  file);
     bool copyFileAsBackup(QString sourceFile, QString destinationDir, QString prefixString, QString suffixString, bool suffixDate, QString suffixDateFormat, QString suffixAfterDateTime);
     void resetFileCopySettings();
     void saveFileCopySettings();

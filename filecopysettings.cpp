@@ -3,6 +3,7 @@
 
 FileCopySettings::FileCopySettings()
 {
+
 }
 
 //FileCopySettings::FileCopySettings(bool saveToDiffDir,QString destinationDir,QString prefixString,String suffixString,bool suffixDate,QString suffixDateFormat,QString suffixAfterDateTime)

@@ -15,10 +15,12 @@ TEMPLATE = app
 SOURCES += main.cpp\
         autofilebackup.cpp \
     diff_match_patch/diff_match_patch.cpp \
-    filecopysettings.cpp
+    filecopysettings.cpp \
+    droptablewidget.cpp
 
 HEADERS  += autofilebackup.h \
     diff_match_patch/diff_match_patch.h \
-    filecopysettings.h
+    filecopysettings.h \
+    droptablewidget.h
 
 FORMS    += autofilebackup.ui

@@ -6,14 +6,14 @@
 #include <QFileDialog>
 #include "filecopysettings.h"
 #include <QSettings>
+#include <QDebug>
 
 QFileSystemWatcher *folderMonitor;
 QFileSystemWatcher *fileMonitor;
 QList<QString> watchedFiles;
-AutoFileBackup::AutoFileBackup(QWidget *parent) :
-    QWidget(parent),
-    ui(new Ui::AutoFileBackup)
+AutoFileBackup::AutoFileBackup(QWidget *parent) : QWidget(parent), ui(new Ui::AutoFileBackup)
 {
+
     ui->setupUi(this);
 
     folderMonitor = new QFileSystemWatcher(this);
@@ -24,6 +24,8 @@ AutoFileBackup::AutoFileBackup(QWidget *parent) :
 
     connect(folderMonitor, SIGNAL(directoryChanged(const QString &)), this,
             SLOT(directoryChanged(const QString &)));
+
+    connect(ui->watchedFilesTableWidget,SIGNAL(dropped(const QMimeData*)), this , SLOT(on_watchedFilesTableWidget_dropped(const QMimeData *)));
 
     QCoreApplication::setOrganizationName("Stalin");
 //    QCoreApplication::setOrganizationDomain("mysoft.com");
@@ -148,7 +150,7 @@ void AutoFileBackup::addLog(QString statusText, QString value)
 
 }
 
-void AutoFileBackup::addNewWatchFile(QString file)
+bool AutoFileBackup::addNewWatchFile(QString file)
 {
     // Adds the path to the fileMonitor only if it exists, does not adds if it is already there.
     if(fileMonitor->addPath(file))
@@ -159,10 +161,15 @@ void AutoFileBackup::addNewWatchFile(QString file)
         folderMonitor->addPath(watchedFileInfo.absoluteDir().path());
 //        addLog("Folder watch added",watchedFileInfo.absoluteDir().path(),logLevel);
     }
+    else
+    {
+        return false;
+    }
     ui->watchedFilesList->clear();
     // Populate the watchedFiles QList with all the files currently monitoring.
     watchedFiles = fileMonitor->files();
     ui->watchedFilesList->addItems(watchedFiles);
+    return true;
 }
 
 bool AutoFileBackup::copyFileAsBackup(QString sourceFile,QString destinationDir,QString prefixString, QString suffixString, bool suffixDate, QString suffixDateFormat, QString suffixAfterDateTime)
@@ -278,4 +285,28 @@ void AutoFileBackup::loadFileCopySettings()
     ui->suffixDateTimeCheckBox->setChecked(fcSettings.getSuffixDate());
     ui->suffixDateTimeFormatLineEdit->setText(fcSettings.getSuffixDateFormat());
     ui->suffixAfterDateTimeLineEdit->setText(fcSettings.getSuffixAfterDateTime());
+}
+
+void AutoFileBackup::on_watchedFilesTableWidget_dropped(const QMimeData *mimeData)
+{
+    qDebug() << "dropped slot";
+    if (mimeData->hasUrls())
+    {
+        QList<QUrl> urls = mimeData->urls();
+        for (int i=0; i<urls.count(); ++i)
+        {
+            QFileInfo watchfile(urls[i].toLocalFile());
+            qDebug() << watchfile.absoluteFilePath();
+            if (watchfile.isFile())
+            {
+                if (addNewWatchFile(watchfile.absoluteFilePath()))
+                {
+                    int row = ui->watchedFilesTableWidget->rowCount();
+                    ui->watchedFilesTableWidget->insertRow(row);
+                    QTableWidgetItem *newItem = new QTableWidgetItem(watchfile.absoluteFilePath());
+                    ui->watchedFilesTableWidget->setItem(row, 0, newItem);
+                }
+            }
+        }
+    }
 }
