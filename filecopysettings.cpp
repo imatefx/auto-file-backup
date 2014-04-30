@@ -38,14 +38,14 @@ void FileCopySettings::readSettings()
 {
     QSettings fcSettings;
 
-    SaveToDiffDir       = fcSettings.value("FileCopySettings/SaveToDiffDir").toBool();
-    DestinationDir      = fcSettings.value("FileCopySettings/DestinationDir").toString();
-    SaveToSubDir        = fcSettings.value("FileCopySettings/SaveToSubDir").toString();
-    PrefixString        = fcSettings.value("FileCopySettings/PrefixString").toString();
-    SuffixString        = fcSettings.value("FileCopySettings/SuffixString").toString();
-    SuffixDate          = fcSettings.value("FileCopySettings/SuffixDate").toBool();
-    SuffixDateFormat    = fcSettings.value("FileCopySettings/SuffixDateFormat").toString();
-    SuffixAfterDateTime = fcSettings.value("FileCopySettings/SuffixAfterDateTime").toString();
+    SaveToDiffDir       = fcSettings.value("FileCopySettings/SaveToDiffDir",false).toBool();
+    DestinationDir      = fcSettings.value("FileCopySettings/DestinationDir","").toString();
+    SaveToSubDir        = fcSettings.value("FileCopySettings/SaveToSubDir","").toString();
+    PrefixString        = fcSettings.value("FileCopySettings/PrefixString","").toString();
+    SuffixString        = fcSettings.value("FileCopySettings/SuffixString","").toString();
+    SuffixDate          = fcSettings.value("FileCopySettings/SuffixDate",true).toBool();
+    SuffixDateFormat    = fcSettings.value("FileCopySettings/SuffixDateFormat","d-MM-yyyy_HH-mm-ss-zzz").toString();
+    SuffixAfterDateTime = fcSettings.value("FileCopySettings/SuffixAfterDateTime","").toString();
 
 }
 

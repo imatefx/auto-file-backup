@@ -1,4 +1,4 @@
-#include "autofilebackup.h"
+    #include "autofilebackup.h"
 #include "ui_autofilebackup.h"
 #include <QFileSystemWatcher>
 #include <QTime>
@@ -7,12 +7,31 @@
 #include "filecopysettings.h"
 #include <QSettings>
 #include <QDebug>
+#include <QFontDatabase>
+#include <QTextStream>
 
 QFileSystemWatcher *folderMonitor;
 QFileSystemWatcher *fileMonitor;
 QList<QString> watchedFiles;
 AutoFileBackup::AutoFileBackup(QWidget *parent) : QWidget(parent), ui(new Ui::AutoFileBackup)
 {
+
+setWindowIcon(QIcon(":/icons/appicon.ico"));
+    // Load the embedded font.
+    QString fontPath = ":/fonts/DejaVuSans.ttf";
+//    QFontDatabase::removeAllApplicationFonts();
+    int fontId = QFontDatabase::addApplicationFont(fontPath);
+
+        QFont font("DejaVu Sans",9);
+//        font.setStyleName("Regular");
+        this->setFont(font);
+qDebug() << fontId ;
+qDebug() << QWidget::fontInfo().family();
+qDebug() << QWidget::fontInfo().styleName();
+qDebug() << QWidget::fontInfo().style();
+QFontDatabase db1;
+    qDebug() << db1.families();
+
 
     ui->setupUi(this);
 
@@ -66,7 +85,7 @@ void AutoFileBackup::on_removeFileButton_clicked()
 
 
     int selectedCount = ui->watchedFilesTableWidget->selectedItems().count();
-
+    qDebug() << selectedCount;
 
     while(ui->watchedFilesTableWidget->selectedItems().count() > 0)
     {
@@ -132,7 +151,7 @@ void AutoFileBackup::fileChanged(const QString &path)
     }
 }
 
-void AutoFileBackup::directoryChanged(const QString &path)
+void AutoFileBackup::directoryChanged(const QString &)
 {
 //    addLog("Directory Modified",path,logLevel);
     // Check the changed directory for all the watched files , Sometimes editors delete the original file and use a

@@ -1,0 +1,13 @@
+<RCC>
+    <qresource prefix="/fonts">
+        <file>DejaVuSans.ttf</file>
+        <file>FuturaBookBT.ttf</file>
+        <file>bitstream.pfb</file>
+    </qresource>
+    <qresource prefix="/qt/etc">
+        <file>qt.conf</file>
+    </qresource>
+    <qresource prefix="/icons">
+        <file>appicon.ico</file>
+    </qresource>
+</RCC>

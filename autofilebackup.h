@@ -22,7 +22,7 @@ private slots:
 
     void on_removeFileButton_clicked();
 
-    void directoryChanged(const QString & path);
+    void directoryChanged(const QString &);
 
     void fileChanged(const QString & path);
 
