@@ -1,7 +1,6 @@
 <RCC>
     <qresource prefix="/fonts">
         <file>DejaVuSans.ttf</file>
-        <file>FuturaBookBT.ttf</file>
         <file>bitstream.pfb</file>
     </qresource>
     <qresource prefix="/qt/etc">

@@ -27,6 +27,4 @@ RESOURCES += \
 
 CONFIG += console
 
-
-
 RC_FILE = winicon.rc

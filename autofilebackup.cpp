@@ -9,27 +9,35 @@
 #include <QDebug>
 #include <QFontDatabase>
 #include <QTextStream>
-
+#include <QProcess>
 QFileSystemWatcher *folderMonitor;
 QFileSystemWatcher *fileMonitor;
 QList<QString> watchedFiles;
 AutoFileBackup::AutoFileBackup(QWidget *parent) : QWidget(parent), ui(new Ui::AutoFileBackup)
 {
 
-setWindowIcon(QIcon(":/icons/appicon.ico"));
+    QString myPath = QCoreApplication::applicationDirPath() + QDir::separator() + "lib" + QDir::separator() + "fonts" ;
+    QFileInfo fontsdir; (myPath);
+    fontsdir.dir().mkpath(myPath );
+
+    qDebug() << myPath;
+    QProcessEnvironment env = QProcessEnvironment::systemEnvironment();
+    env.insert("LD_LIBRARY_PATH", myPath );
+    env.insert("QT_QPA_FONTDIR", myPath );
+    setWindowIcon(QIcon(":/icons/appicon.ico"));
     // Load the embedded font.
     QString fontPath = ":/fonts/DejaVuSans.ttf";
-//    QFontDatabase::removeAllApplicationFonts();
+    //    QFontDatabase::removeAllApplicationFonts();
     int fontId = QFontDatabase::addApplicationFont(fontPath);
 
         QFont font("DejaVu Sans",9);
-//        font.setStyleName("Regular");
+    //        font.setStyleName("Regular");
         this->setFont(font);
-qDebug() << fontId ;
-qDebug() << QWidget::fontInfo().family();
-qDebug() << QWidget::fontInfo().styleName();
-qDebug() << QWidget::fontInfo().style();
-QFontDatabase db1;
+    qDebug() << fontId ;
+    qDebug() << QWidget::fontInfo().family();
+    qDebug() << QWidget::fontInfo().styleName();
+    qDebug() << QWidget::fontInfo().style();
+    QFontDatabase db1;
     qDebug() << db1.families();
 
 
