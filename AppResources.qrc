@@ -4,9 +4,12 @@
         <file>bitstream.pfb</file>
     </qresource>
     <qresource prefix="/qt/etc">
-        <file>qt.conf</file>
+        <file>qt.conf-fordeployment</file>
     </qresource>
     <qresource prefix="/icons">
         <file>appicon.ico</file>
+    </qresource>
+    <qresource prefix="/images">
+        <file>dropfiles.png</file>
     </qresource>
 </RCC>

@@ -34,6 +34,13 @@
          <property name="acceptDrops">
           <bool>true</bool>
          </property>
+         <property name="styleSheet">
+          <string notr="true">QFrame {
+	background-image: url(:/images/dropfiles.png);
+	background-repeat: no-repeat;
+	background-position: center center;
+}</string>
+         </property>
          <property name="dragDropMode">
           <enum>QAbstractItemView::DropOnly</enum>
          </property>
