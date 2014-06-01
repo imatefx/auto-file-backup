@@ -14,17 +14,19 @@ TEMPLATE = app
 SOURCES += main.cpp\
         autofilebackup.cpp \
     filecopysettings.cpp \
-    droptablewidget.cpp
+    droptablewidget.cpp \
+    projectconfiguration.cpp
 
 HEADERS  += autofilebackup.h \
     filecopysettings.h \
-    droptablewidget.h
+    droptablewidget.h \
+    projectconfiguration.h
 
 FORMS    += autofilebackup.ui
 
 RESOURCES += \
     AppResources.qrc
 
-CONFIG += console
+#CONFIG += console
 
 RC_FILE = winicon.rc
