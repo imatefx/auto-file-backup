@@ -1,4 +1,4 @@
-    #include "autofilebackup.h"
+#include "autofilebackup.h"
 #include "ui_autofilebackup.h"
 #include <QFileSystemWatcher>
 #include <QTime>
@@ -103,8 +103,7 @@ void AutoFileBackup::on_removeFileButton_clicked()
         ui->watchedFilesTableWidget->removeRow(ui->watchedFilesTableWidget->currentRow());
         watchedFiles = fileMonitor->files();
     }
-
-
+        setDropOverlay();
 
 }
 
@@ -151,7 +150,6 @@ void AutoFileBackup::fileChanged(const QString &path)
 
         copyFileAsBackup(path,saveDir,prefixString,suffixString,suffixDate,suffixDateFormat,suffixAfterDateTime);
 
-
 //        addLog("File exists",path,logLevel);
     }
     else{
@@ -191,6 +189,18 @@ void AutoFileBackup::addLog(QString statusText, QString value)
 
 }
 
+void AutoFileBackup::setDropOverlay()
+{
+    if(ui->watchedFilesTableWidget->rowCount()<1)
+    {
+        ui->watchedFilesTableWidget->setStyleSheet("QFrame {background-image: url(:/images/dropfiles.png);background-repeat: no-repeat;background-position: center center;background-attachment: fixed;}");
+    }
+    else
+    {
+        ui->watchedFilesTableWidget->setStyleSheet("");
+    }
+}
+
 bool AutoFileBackup::addNewWatchFile(QString file)
 {
     // Adds the path to the fileMonitor only if it exists, does not adds if it is already there.
@@ -214,6 +224,8 @@ bool AutoFileBackup::addNewWatchFile(QString file)
     {
         return false;
     }
+    setDropOverlay();
+
 //    ui->watchedFilesList->clear();
     // Populate the watchedFiles QList with all the files currently monitoring.
 
