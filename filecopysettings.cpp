@@ -28,7 +28,7 @@ void FileCopySettings::saveSettings()
     fcSettings.setValue("FileCopySettings/SaveToSubDir" , SaveToSubDir);
     fcSettings.setValue("FileCopySettings/PrefixString" , PrefixString);
     fcSettings.setValue("FileCopySettings/SuffixString" , SuffixString);
-    fcSettings.setValue("FileCopySettings/SuffixDate" , SuffixDate);
+    fcSettings.setValue("FileCopySettings/SuffixDate" , HasSuffixDate);
     fcSettings.setValue("FileCopySettings/SuffixDateFormat" , SuffixDateFormat);
     fcSettings.setValue("FileCopySettings/SuffixAfterDateTime" , SuffixAfterDateTime);
 
@@ -43,7 +43,7 @@ void FileCopySettings::readSettings()
     SaveToSubDir        = fcSettings.value("FileCopySettings/SaveToSubDir","").toString();
     PrefixString        = fcSettings.value("FileCopySettings/PrefixString","").toString();
     SuffixString        = fcSettings.value("FileCopySettings/SuffixString","").toString();
-    SuffixDate          = fcSettings.value("FileCopySettings/SuffixDate",true).toBool();
+    HasSuffixDate          = fcSettings.value("FileCopySettings/SuffixDate",true).toBool();
     SuffixDateFormat    = fcSettings.value("FileCopySettings/SuffixDateFormat","d-MM-yyyy_HH-mm-ss-zzz").toString();
     SuffixAfterDateTime = fcSettings.value("FileCopySettings/SuffixAfterDateTime","").toString();
 
@@ -75,9 +75,9 @@ QString FileCopySettings::getSuffixString()
     return SuffixString;
 }
 
-bool FileCopySettings::getSuffixDate()
+bool FileCopySettings::getHasSuffixDate()
 {
-    return SuffixDate;
+    return HasSuffixDate;
 }
 
 QString FileCopySettings::getSuffixDateFormat()
@@ -115,9 +115,9 @@ void FileCopySettings::setSuffixString(QString inputData)
     SuffixString = inputData;
 }
 
-void FileCopySettings::setSuffixDate(bool inputData)
+void FileCopySettings::setHasSuffixDate(bool inputData)
 {
-    SuffixDate = inputData;
+    HasSuffixDate = inputData;
 }
 
 void FileCopySettings::setSuffixDateFormat(QString inputData)

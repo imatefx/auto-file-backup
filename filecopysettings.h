@@ -11,7 +11,7 @@ private:
     QString SaveToSubDir;
     QString PrefixString;
     QString SuffixString;
-    bool SuffixDate;
+    bool HasSuffixDate;
     QString SuffixDateFormat;
     QString SuffixAfterDateTime;
 public:
@@ -24,7 +24,7 @@ public:
     QString getSaveToSubDir();
     QString getPrefixString();
     QString getSuffixString();
-    bool getSuffixDate();
+    bool getHasSuffixDate();
     QString getSuffixDateFormat();
     QString getSuffixAfterDateTime();
 
@@ -33,7 +33,7 @@ public:
     void setSaveToSubDir(QString inputData);
     void setPrefixString(QString inputData);
     void setSuffixString(QString inputData);
-    void setSuffixDate(bool inputData);
+    void setHasSuffixDate(bool inputData);
     void setSuffixDateFormat(QString inputData);
     void setSuffixAfterDateTime(QString inputData);
 

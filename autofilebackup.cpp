@@ -10,6 +10,8 @@
 #include <QFontDatabase>
 #include <QTextStream>
 #include <QProcess>
+#include<projectconfiguration.h>
+
 QFileSystemWatcher *folderMonitor;
 QFileSystemWatcher *fileMonitor;
 QList<QString> watchedFiles;
@@ -58,7 +60,6 @@ AutoFileBackup::AutoFileBackup(QWidget *parent) : QWidget(parent), ui(new Ui::Au
 //    QCoreApplication::setOrganizationDomain("mysoft.com");
     QCoreApplication::setApplicationName("Auto File Backup");
 
-    loadFileCopySettings();
 
 //    ui->watchedFilesTableWidget->AdjustToContents;
      ui->watchedFilesTableWidget->setColumnWidth(0,  500);
@@ -297,10 +298,10 @@ void AutoFileBackup::on_destinationDirBrowseButton_clicked()
 
 void AutoFileBackup::on_fileCopyButtonBox_clicked(QAbstractButton *button)
 {
-    if (button->text() == tr("Apply"))
-        saveFileCopySettings();
-    else if (button->text() == tr("Discard"))
-        loadFileCopySettings();
+//    if (button->text() == tr("Apply"))
+//        saveFileCopySettings();
+//    else if (button->text() == tr("Discard"))
+//        loadFileCopySettings();
 }
 
 void AutoFileBackup::resetFileCopySettings()
@@ -316,7 +317,7 @@ void AutoFileBackup::resetFileCopySettings()
     ui->suffixDateTimeFormatLineEdit->setText("dd-MM-yyyy-hh-mm-ss");
 }
 
-void AutoFileBackup::saveFileCopySettings()
+FileCopySettings AutoFileBackup::getFileCopySettings()
 {
     FileCopySettings fcSettings;
 
@@ -332,25 +333,25 @@ void AutoFileBackup::saveFileCopySettings()
     }
     fcSettings.setPrefixString(ui->filePrefixLineEdit->text());
     fcSettings.setSuffixString(ui->fileSuffixLineEdit->text());
-    fcSettings.setSuffixDate(ui->suffixDateTimeCheckBox->isChecked());
+    fcSettings.setHasSuffixDate(ui->suffixDateTimeCheckBox->isChecked());
     fcSettings.setSuffixDateFormat(ui->suffixDateTimeFormatLineEdit->text());
     fcSettings.setSuffixAfterDateTime(ui->suffixAfterDateTimeLineEdit->text());
 
-    fcSettings.saveSettings();
+//    fcSettings.saveSettings();
+    return fcSettings;
 
 }
 
-void AutoFileBackup::loadFileCopySettings()
+void AutoFileBackup::setFileCopySettings(FileCopySettings fcSettings)
 {
-    FileCopySettings fcSettings;
-    fcSettings.readSettings();
+//    fcSettings.readSettings();
 
     ui->saveToDiffDirCheckBox->setChecked(fcSettings.getSaveToDiffDir());
     ui->destinationDirLineEdit->setText(fcSettings.getDestinationDir());
     ui->saveToSubDirLineEdit->setText(fcSettings.getSaveToSubDir());
     ui->filePrefixLineEdit->setText(fcSettings.getPrefixString());
     ui->fileSuffixLineEdit->setText(fcSettings.getSuffixString());
-    ui->suffixDateTimeCheckBox->setChecked(fcSettings.getSuffixDate());
+    ui->suffixDateTimeCheckBox->setChecked(fcSettings.getHasSuffixDate());
     ui->suffixDateTimeFormatLineEdit->setText(fcSettings.getSuffixDateFormat());
     ui->suffixAfterDateTimeLineEdit->setText(fcSettings.getSuffixAfterDateTime());
 }
@@ -377,4 +378,25 @@ void AutoFileBackup::insertToWatchTable(QString file)
     ui->watchedFilesTableWidget->insertRow(row);
     QTableWidgetItem *newItem = new QTableWidgetItem(file);
     ui->watchedFilesTableWidget->setItem(row, 0, newItem);
+}
+
+void AutoFileBackup::on_saveProjectFileButton_clicked()
+{
+    ProjectConfiguration p;
+    FileCopySettings fc ;
+    p.setFileCopySettings(getFileCopySettings());
+    p.setWatchedFileList(watchedFiles);
+    QString savefilename= QFileDialog::getSaveFileName(this,"Save Xml", ".", "Xml files (*.xml)");
+    p.saveToFile(savefilename);
+}
+
+void AutoFileBackup::on_openProjectButton_clicked()
+{
+     ProjectConfiguration p;
+     QString fileName = QFileDialog::getOpenFileName(this, tr("Open File"),"", tr("Files (*.*)"));
+     p.openFromFile(fileName);
+     foreach(QString watchFile ,p.getWatchedFileList())
+     {
+         addNewWatchFile(watchFile);
+     }
 }
