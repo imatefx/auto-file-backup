@@ -383,20 +383,22 @@ void AutoFileBackup::insertToWatchTable(QString file)
 void AutoFileBackup::on_saveProjectFileButton_clicked()
 {
     ProjectConfiguration p;
-    FileCopySettings fc ;
     p.setFileCopySettings(getFileCopySettings());
     p.setWatchedFileList(watchedFiles);
-    QString savefilename= QFileDialog::getSaveFileName(this,"Save Xml", ".", "Xml files (*.xml)");
+    QString savefilename= QFileDialog::getSaveFileName(this,"Save AutoFileBackup Project", ".", "Project files (*.afb)");
     p.saveToFile(savefilename);
 }
 
 void AutoFileBackup::on_openProjectButton_clicked()
 {
      ProjectConfiguration p;
-     QString fileName = QFileDialog::getOpenFileName(this, tr("Open File"),"", tr("Files (*.*)"));
+     QString fileName = QFileDialog::getOpenFileName(this, tr("Open File"),"", tr("Files (*.afb)"));
      p.openFromFile(fileName);
      foreach(QString watchFile ,p.getWatchedFileList())
      {
          addNewWatchFile(watchFile);
      }
+          setFileCopySettings(p.getFileCopySettings());
+
+          qDebug() <<p.getFileCopySettings().getPrefixString();
 }

@@ -30,9 +30,10 @@ void ProjectConfiguration::saveToFile(QString filename)
 
      xmlWriter.writeTextElement("saveToDiffDir", QString::number(this->fileCopySettings.getSaveToDiffDir()));
      xmlWriter.writeTextElement("destinationDir", this->fileCopySettings.getDestinationDir());
+     xmlWriter.writeTextElement("saveToSubDir", this->fileCopySettings.getSaveToSubDir());
      xmlWriter.writeTextElement("prefixString", this->fileCopySettings.getPrefixString());
      xmlWriter.writeTextElement("suffixString", this->fileCopySettings.getSuffixString());
-     xmlWriter.writeTextElement("suffixDate", QString::number(this->fileCopySettings .getHasSuffixDate()));
+     xmlWriter.writeTextElement("hasSuffixDate", QString::number(this->fileCopySettings .getHasSuffixDate()));
      xmlWriter.writeTextElement("suffixDateFormat", this->fileCopySettings.getSuffixDateFormat());
      xmlWriter.writeTextElement("suffixAfterDateTime", this->fileCopySettings.getSuffixAfterDateTime());
 
@@ -74,7 +75,7 @@ void ProjectConfiguration::openFromFile(QString filename)
             }
             else if(Rxml.name() == "File")
             {
-               watchedFileList.append(Rxml.readElementText());
+               this->watchedFileList.append(Rxml.readElementText());
 //               qDebug() <<"Filelist " << watchedFileList;
                Rxml.readNext();
             }
@@ -84,44 +85,61 @@ void ProjectConfiguration::openFromFile(QString filename)
             }
             else if(Rxml.name() == "saveToDiffDir")
             {
-//               qDebug() <<"saveToDiffDir " << Rxml.readElementText();
-               fileCopySettings.setSaveToDiffDir(Rxml.readElementText().toInt());
+                QString value = Rxml.readElementText();
+//               qDebug() <<"saveToDiffDir " << value;
+               this->fileCopySettings.setSaveToDiffDir(value.toInt());
+//               qDebug() <<"saveToDiffDir " << this->fileCopySettings.getSaveToDiffDir();
                Rxml.readNext();
             }
             else if(Rxml.name() == "destinationDir")
             {
-//               qDebug() <<"destinationDir " << Rxml.readElementText();
-               fileCopySettings.setDestinationDir(Rxml.readElementText());
+                QString value = Rxml.readElementText();
+//               qDebug() <<"destinationDir " << value;
+               this->fileCopySettings.setDestinationDir(value);
+//               qDebug() <<"destinationDir " << this->fileCopySettings.getDestinationDir();
+               Rxml.readNext();
+            } else if(Rxml.name() == "saveToSubDir")
+            {
+                QString value = Rxml.readElementText();
+//               qDebug() <<"saveToSubDir " << value;
+               this->fileCopySettings.setSaveToSubDir(value);
+//               qDebug() <<"saveToSubDir " << this->fileCopySettings.getSaveToSubDir();
                Rxml.readNext();
             }
             else if(Rxml.name() == "prefixString")
             {
-//               qDebug() <<"prefixString " << Rxml.readElementText();
-               fileCopySettings.setPrefixString(Rxml.readElementText());
+                QString value = Rxml.readElementText();
+//               qDebug() <<"prefixString " << value;
+               this->fileCopySettings.setPrefixString(value);
+//               qDebug() <<"prefixString " << this->fileCopySettings.getPrefixString();
                Rxml.readNext();
             }
             else if(Rxml.name() == "suffixString")
             {
-//               qDebug() <<"suffixString " << Rxml.readElementText();
-               fileCopySettings.setSuffixString(Rxml.readElementText());
+                QString value = Rxml.readElementText();
+//               qDebug() <<"suffixString " << value;
+               this->fileCopySettings.setSuffixString(value);
                Rxml.readNext();
             }
-            else if(Rxml.name() == "suffixDate")
+            else if(Rxml.name() == "hasSuffixDate")
             {
-//               qDebug() <<"suffixDate " << Rxml.readElementText();
-               fileCopySettings.setHasSuffixDate(Rxml.readElementText().toInt());
+                QString value = Rxml.readElementText();
+//               qDebug() <<"hasSuffixDate " << value;
+               this->fileCopySettings.setHasSuffixDate(value.toInt());
                Rxml.readNext();
             }
             else if(Rxml.name() == "suffixDateFormat")
             {
-//               qDebug() <<"suffixDateFormat " << Rxml.readElementText();
-               fileCopySettings.setSuffixDateFormat(Rxml.readElementText());
+                QString value = Rxml.readElementText();
+//               qDebug() <<"suffixDateFormat " << value;
+               this->fileCopySettings.setSuffixDateFormat(value);
                Rxml.readNext();
             }
             else if(Rxml.name() == "suffixAfterDateTime")
             {
-//               qDebug() <<"suffixAfterDateTime " << Rxml.readElementText();
-               fileCopySettings.setSuffixAfterDateTime(Rxml.readElementText());
+                QString value = Rxml.readElementText();
+//               qDebug() <<"suffixAfterDateTime " << value;
+               this->fileCopySettings.setSuffixAfterDateTime(value);
                Rxml.readNext();
             }
             else
