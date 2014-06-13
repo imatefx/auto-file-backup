@@ -225,7 +225,8 @@ bool AutoFileBackup::addNewWatchFile(QString file)
         {
             insertToWatchTable(file);
         }
-        addLog("Watching File :" , file);
+        addLog("Watching File " , file);
+//        trayIcon->showMessage("New file added", file + " has been added to monitor for changes" ,QSystemTrayIcon::Information,1000);
 
         watchedFiles = fileMonitor->files();
     }
@@ -258,10 +259,12 @@ bool AutoFileBackup::copyFileAsBackup(QString sourceFile,QString destinationDir,
     if(result)
     {
         addLog("Created File ", destinationFile);
+        trayIcon->showMessage("File Changed", "File " + sourceFile + " \nhas been backuped to  " + destinationFile ,QSystemTrayIcon::Information,1000);
     }
     else
     {
         addLog("Unable to create file ", destinationFile);
+        trayIcon->showMessage("Unable to create file", "Unable to create file " + destinationFile ,QSystemTrayIcon::Critical,1000);
     }
     return result;
 }
@@ -446,15 +449,11 @@ void AutoFileBackup::showHideWindow()
         this->hide();
         showHideTray->setIcon(QIcon(":/images/maximize-button.png"));
         showHideTray->setText("Show Main Window");
+        trayIcon->showMessage("I am here.","I will be here monitoring your files." ,QSystemTrayIcon::Information,1000);
     }
     else
     {
         this->setWindowState(Qt::WindowActive);
-
-//        2000 May16;
-//        500 may17;
-//        1000 june6;
-
         this->show();
         showHideTray->setIcon(QIcon(":/images/minimize-button.png"));
         showHideTray->setText("Hide Main Window");
