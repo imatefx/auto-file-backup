@@ -5,6 +5,8 @@
 #include <QAbstractButton>
 #include <QMimeData>
 #include <filecopysettings.h>
+#include <QSystemTrayIcon>
+#include <QCloseEvent>
 
 namespace Ui {
 class AutoFileBackup;
@@ -17,6 +19,7 @@ class AutoFileBackup : public QWidget
 public:
     explicit AutoFileBackup(QWidget *parent = 0);
     ~AutoFileBackup();
+    bool createConnection();
 
 private slots:
     void on_addNewFileButton_clicked();
@@ -41,6 +44,10 @@ private slots:
 
     void on_openProjectButton_clicked();
 
+    void trayIconClicked(QSystemTrayIcon::ActivationReason);
+
+    void showHideWindow();
+
 private:
     Ui::AutoFileBackup *ui;
     void addLog(QString statusText, QString  value);
@@ -51,6 +58,19 @@ private:
     void setFileCopySettings(FileCopySettings fcSettings);
     void insertToWatchTable(QString file);
     void setDropOverlay();
+
+//    // Tray Icon Functions
+    void createTrayActions();
+    void createTrayIcon();
+    void setTrayIcon();
+
+    void closeEvent(QCloseEvent *event);
+    void changeEvent(QEvent *);
+
+    QSystemTrayIcon *trayIcon;
+    QMenu *trayIconMenu;
+    QAction *showHideTray;
+    QAction *closeTray;
 };
 
 #endif // AUTOFILEBACKUP_H

@@ -11,5 +11,9 @@
     </qresource>
     <qresource prefix="/images">
         <file>dropfiles.png</file>
+        <file>backup_ico.png</file>
+        <file>maximize-button.png</file>
+        <file>minimize-button.png</file>
+        <file>exit-button.png</file>
     </qresource>
 </RCC>

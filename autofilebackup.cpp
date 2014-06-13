@@ -11,6 +11,8 @@
 #include <QTextStream>
 #include <QProcess>
 #include<projectconfiguration.h>
+#include<QSystemTrayIcon>
+#include<QMenuBar>
 
 QFileSystemWatcher *folderMonitor;
 QFileSystemWatcher *fileMonitor;
@@ -18,6 +20,12 @@ QList<QString> watchedFiles;
 AutoFileBackup::AutoFileBackup(QWidget *parent) : QWidget(parent), ui(new Ui::AutoFileBackup)
 {
 
+    createTrayActions();
+    createTrayIcon();
+    setTrayIcon();
+    trayIcon->show();
+
+/*
     QString myPath = QCoreApplication::applicationDirPath() + QDir::separator() + "lib" + QDir::separator() + "fonts" ;
     QFileInfo fontsdir; (myPath);
     fontsdir.dir().mkpath(myPath );
@@ -26,7 +34,7 @@ AutoFileBackup::AutoFileBackup(QWidget *parent) : QWidget(parent), ui(new Ui::Au
     QProcessEnvironment env = QProcessEnvironment::systemEnvironment();
     env.insert("LD_LIBRARY_PATH", myPath );
     env.insert("QT_QPA_FONTDIR", myPath );
-    setWindowIcon(QIcon(":/icons/appicon.ico"));
+
     // Load the embedded font.
     QString fontPath = ":/fonts/DejaVuSans.ttf";
     //    QFontDatabase::removeAllApplicationFonts();
@@ -41,8 +49,8 @@ AutoFileBackup::AutoFileBackup(QWidget *parent) : QWidget(parent), ui(new Ui::Au
     qDebug() << QWidget::fontInfo().style();
     QFontDatabase db1;
     qDebug() << db1.families();
-
-
+*/
+    setWindowIcon(QIcon(":/images/backup_ico.png"));
     ui->setupUi(this);
 
     folderMonitor = new QFileSystemWatcher(this);
@@ -387,6 +395,11 @@ void AutoFileBackup::on_saveProjectFileButton_clicked()
     p.setWatchedFileList(watchedFiles);
     QString savefilename= QFileDialog::getSaveFileName(this,"Save AutoFileBackup Project", ".", "Project files (*.afb)");
     p.saveToFile(savefilename);
+
+
+//    TrayIcon Test
+//    trayIcon->showMessage("titleEdit->text()", "bodyEdit->toPlainText()",QSystemTrayIcon::Information,1000);
+
 }
 
 void AutoFileBackup::on_openProjectButton_clicked()
@@ -401,4 +414,87 @@ void AutoFileBackup::on_openProjectButton_clicked()
           setFileCopySettings(p.getFileCopySettings());
 
           qDebug() <<p.getFileCopySettings().getPrefixString();
+}
+
+
+
+
+void AutoFileBackup::changeEvent(QEvent *event)
+{
+//    AutoFileBackup::changeEvent(event);
+    if(event->type() == QEvent::WindowStateChange) {
+        if(isMinimized())
+        {
+//            this->hide();
+            showHideWindow();
+        }
+    }
+}
+
+void AutoFileBackup::closeEvent(QCloseEvent *event)
+{
+    if (trayIcon->isVisible()) {
+        showHideWindow();
+        event->ignore();
+    }
+}
+
+void AutoFileBackup::showHideWindow()
+{
+    if(this->isVisible())
+    {
+        this->hide();
+        showHideTray->setIcon(QIcon(":/images/maximize-button.png"));
+        showHideTray->setText("Show Main Window");
+    }
+    else
+    {
+        this->setWindowState(Qt::WindowActive);
+
+//        2000 May16;
+//        500 may17;
+//        1000 june6;
+
+        this->show();
+        showHideTray->setIcon(QIcon(":/images/minimize-button.png"));
+        showHideTray->setText("Hide Main Window");
+    }
+}
+
+
+void AutoFileBackup::trayIconClicked(QSystemTrayIcon::ActivationReason reason)
+{
+    if(reason == QSystemTrayIcon::DoubleClick)
+        showHideWindow();
+}
+
+void AutoFileBackup::setTrayIcon()
+{
+    trayIcon->setIcon(QIcon(":/images/backup_ico.png"));
+}
+void AutoFileBackup::createTrayIcon()
+{
+    trayIconMenu = new QMenu(this);
+    trayIconMenu->addAction(showHideTray);
+    trayIconMenu->addSeparator();
+    trayIconMenu->addAction(closeTray);
+
+    trayIcon = new QSystemTrayIcon(this);
+    trayIcon->setContextMenu(trayIconMenu);
+
+    connect(
+            trayIcon,
+          SIGNAL(activated(QSystemTrayIcon::ActivationReason)),
+            this,
+            SLOT(trayIconClicked(QSystemTrayIcon::ActivationReason))
+           );
+}
+void AutoFileBackup::createTrayActions()
+{
+    showHideTray = new QAction(tr("&Hide Main Window"), this);
+    connect(showHideTray, SIGNAL(triggered()), this, SLOT(showHideWindow()));
+    showHideTray->setIcon(QIcon(":/images/minimize-button.png"));
+    closeTray = new QAction(tr("&Exit"), this);
+    connect(closeTray, SIGNAL(triggered()), qApp, SLOT(quit()));
+    closeTray->setIcon(QIcon(":/images/exit-button.png"));
 }
