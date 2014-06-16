@@ -30,3 +30,6 @@ RESOURCES += \
 #CONFIG += console
 
 RC_FILE = winicon.rc
+
+OTHER_FILES += \
+    winicon.rc

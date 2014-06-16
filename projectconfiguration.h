@@ -8,6 +8,8 @@ class ProjectConfiguration
 private:
 QStringList watchedFileList;
 FileCopySettings fileCopySettings;
+int savingTimeDelay;
+QString currentProjectFileName;
 
 public:
     ProjectConfiguration();
@@ -15,8 +17,12 @@ public:
     void openFromFile(QString filename);
     void setWatchedFileList(QStringList fileList);
     void setFileCopySettings(FileCopySettings settings);
+    void setSavingTimeDelay(int msec);
+    int getSavingTimeDelay();
     QStringList getWatchedFileList();
     FileCopySettings getFileCopySettings();
+    void setCurrentProjectFileName(QString filename);
+    QString getCurrentProjectFileName();
 };
 
 #endif // PROJECTCONFIGURATION_H

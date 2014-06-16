@@ -7,6 +7,8 @@
 #include <filecopysettings.h>
 #include <QSystemTrayIcon>
 #include <QCloseEvent>
+#include <QFileSystemWatcher>
+#include <projectconfiguration.h>
 
 namespace Ui {
 class AutoFileBackup;
@@ -28,7 +30,11 @@ private slots:
 
     void directoryChanged(const QString &);
 
+    void delayedDirectoryChanged();
+
     void fileChanged(const QString & path);
+
+    void delayedFileChanged();
 
     void on_saveToDiffDirCheckBox_stateChanged(int arg1);
 
@@ -40,13 +46,23 @@ private slots:
 
     void on_watchedFilesTableWidget_dropped(const QMimeData *mimeData);
 
-    void on_saveProjectFileButton_clicked();
+    void on_saveProjectButton_clicked();
 
     void on_openProjectButton_clicked();
 
     void trayIconClicked(QSystemTrayIcon::ActivationReason);
 
     void showHideWindow();
+
+    void on_createDateFolderCheckBox_stateChanged(int arg1);
+
+    void on_previewButton_clicked();
+
+    void on_saveProjectAsButton_clicked();
+
+    void on_isSavingToDifferentFolderRadioButton_toggled(bool checked);
+
+    void on_clearLogButton_clicked();
 
 private:
     Ui::AutoFileBackup *ui;
@@ -71,6 +87,12 @@ private:
     QMenu *trayIconMenu;
     QAction *showHideTray;
     QAction *closeTray;
+
+    QFileSystemWatcher *folderMonitor;
+    QFileSystemWatcher *fileMonitor;
+    QList<QString> watchedFiles;
+    QStringList changedFileQueue;
+    ProjectConfiguration projectConfg;
 };
 
 #endif // AUTOFILEBACKUP_H

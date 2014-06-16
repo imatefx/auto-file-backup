@@ -7,6 +7,7 @@
         <file>qt.conf-fordeployment</file>
     </qresource>
     <qresource prefix="/icons">
+        <file>appicon_old.ico</file>
         <file>appicon.ico</file>
     </qresource>
     <qresource prefix="/images">
