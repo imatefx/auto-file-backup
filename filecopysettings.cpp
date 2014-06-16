@@ -6,9 +6,9 @@ FileCopySettings::FileCopySettings()
 
 }
 
-//FileCopySettings::FileCopySettings(bool saveToDiffDir,QString destinationDir,QString prefixString,String suffixString,bool suffixDate,QString suffixDateFormat,QString suffixAfterDateTime)
+//FileCopySettings::FileCopySettings(bool IsSavingToDifferentFolder,QString destinationDir,QString prefixString,String suffixString,bool suffixDate,QString suffixDateFormat,QString suffixAfterDateTime)
 //{
-//    this->SaveToDiffDir       = saveToDiffDir;
+//    this->IsSavingToDifferentFolder       = IsSavingToDifferentFolder;
 //    this->DestinationDir      = destinationDir;
 //    this->PrefixString        = prefixString;
 //    this->SuffixString        = suffixString;
@@ -23,7 +23,7 @@ void FileCopySettings::saveSettings()
 {
     QSettings fcSettings;
 
-    fcSettings.setValue("FileCopySettings/SaveToDiffDir" , SaveToDiffDir);
+    fcSettings.setValue("FileCopySettings/IsSavingToDifferentFolder" , IsSavingToDifferentFolder);
     fcSettings.setValue("FileCopySettings/DestinationDir" , DestinationDir);
     fcSettings.setValue("FileCopySettings/SaveToSubDir" , SaveToSubDir);
     fcSettings.setValue("FileCopySettings/PrefixString" , PrefixString);
@@ -38,7 +38,7 @@ void FileCopySettings::readSettings()
 {
     QSettings fcSettings;
 
-    SaveToDiffDir       = fcSettings.value("FileCopySettings/SaveToDiffDir",false).toBool();
+    IsSavingToDifferentFolder       = fcSettings.value("FileCopySettings/IsSavingToDifferentFolder",false).toBool();
     DestinationDir      = fcSettings.value("FileCopySettings/DestinationDir","").toString();
     SaveToSubDir        = fcSettings.value("FileCopySettings/SaveToSubDir","").toString();
     PrefixString        = fcSettings.value("FileCopySettings/PrefixString","").toString();
@@ -50,9 +50,9 @@ void FileCopySettings::readSettings()
 }
 
 
-bool FileCopySettings::getSaveToDiffDir()
+bool FileCopySettings::getIsSavingToDifferentFolder()
 {
-    return SaveToDiffDir;
+    return IsSavingToDifferentFolder;
 }
 
 QString FileCopySettings::getDestinationDir()
@@ -85,14 +85,24 @@ QString FileCopySettings::getSuffixDateFormat()
     return SuffixDateFormat;
 }
 
+bool FileCopySettings::getCreateDateBasedFolder()
+{
+    return CreateDateBasedFolder;
+}
+
+QString FileCopySettings::getDateBasedFolderFormat()
+{
+    return DateBasedFolderFormat;
+}
+
 QString FileCopySettings::getSuffixAfterDateTime()
 {
     return SuffixAfterDateTime;
 }
 
-void FileCopySettings::setSaveToDiffDir(bool inputData)
+void FileCopySettings::setIsSavingToDifferentFolder(bool inputData)
 {
-    SaveToDiffDir = inputData;
+    IsSavingToDifferentFolder = inputData;
 }
 
 void FileCopySettings::setSaveToSubDir(QString inputData)
@@ -128,4 +138,14 @@ void FileCopySettings::setSuffixDateFormat(QString inputData)
 void FileCopySettings::setSuffixAfterDateTime(QString inputData)
 {
     SuffixAfterDateTime = inputData;
+}
+
+void FileCopySettings::setCreateDateBasedFolder(bool inputData)
+{
+    CreateDateBasedFolder = inputData;
+}
+
+void FileCopySettings::setDateBasedFolderFormat(QString inputData)
+{
+    DateBasedFolderFormat = inputData;
 }

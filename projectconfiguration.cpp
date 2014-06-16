@@ -28,9 +28,11 @@ void ProjectConfiguration::saveToFile(QString filename)
 
      xmlWriter.writeStartElement("FileCopySettings");
 
-     xmlWriter.writeTextElement("saveToDiffDir", QString::number(this->fileCopySettings.getSaveToDiffDir()));
+     xmlWriter.writeTextElement("IsSavingToDifferentFolder", QString::number(this->fileCopySettings.getIsSavingToDifferentFolder()));
      xmlWriter.writeTextElement("destinationDir", this->fileCopySettings.getDestinationDir());
      xmlWriter.writeTextElement("saveToSubDir", this->fileCopySettings.getSaveToSubDir());
+     xmlWriter.writeTextElement("createDateBasedFolder", QString::number(this->fileCopySettings .getCreateDateBasedFolder()));
+     xmlWriter.writeTextElement("dateBasedFolderFormat", this->fileCopySettings.getDateBasedFolderFormat());
      xmlWriter.writeTextElement("prefixString", this->fileCopySettings.getPrefixString());
      xmlWriter.writeTextElement("suffixString", this->fileCopySettings.getSuffixString());
      xmlWriter.writeTextElement("hasSuffixDate", QString::number(this->fileCopySettings .getHasSuffixDate()));
@@ -39,10 +41,15 @@ void ProjectConfiguration::saveToFile(QString filename)
 
      xmlWriter.writeEndElement();
 
+     xmlWriter.writeStartElement("AdvancedSettings");
+         xmlWriter.writeTextElement("SavingTimeDelay", QString::number(this->getSavingTimeDelay()));
+     xmlWriter.writeEndElement();
+
      xmlWriter.writeEndElement();
      xmlWriter.writeEndDocument();
 
      file.close();
+     setCurrentProjectFileName(filename);
      qDebug() <<"Saved";
 }
 void ProjectConfiguration::openFromFile(QString filename)
@@ -73,6 +80,10 @@ void ProjectConfiguration::openFromFile(QString filename)
             {
                Rxml.readNext();
             }
+            else if(Rxml.name() == "AdvancedSettings")
+            {
+               Rxml.readNext();
+            }
             else if(Rxml.name() == "File")
             {
                this->watchedFileList.append(Rxml.readElementText());
@@ -83,11 +94,19 @@ void ProjectConfiguration::openFromFile(QString filename)
             {
                Rxml.readNext();
             }
-            else if(Rxml.name() == "saveToDiffDir")
+            else if(Rxml.name() == "IsSavingToDifferentFolder")
             {
                 QString value = Rxml.readElementText();
 //               qDebug() <<"saveToDiffDir " << value;
-               this->fileCopySettings.setSaveToDiffDir(value.toInt());
+               this->fileCopySettings.setIsSavingToDifferentFolder(value.toInt());
+//               qDebug() <<"saveToDiffDir " << this->fileCopySettings.getSaveToDiffDir();
+               Rxml.readNext();
+            }
+            else if(Rxml.name() == "SavingTimeDelay")
+            {
+                QString value = Rxml.readElementText();
+//               qDebug() <<"saveToDiffDir " << value;
+               this->setSavingTimeDelay(value.toInt());
 //               qDebug() <<"saveToDiffDir " << this->fileCopySettings.getSaveToDiffDir();
                Rxml.readNext();
             }
@@ -135,6 +154,20 @@ void ProjectConfiguration::openFromFile(QString filename)
                this->fileCopySettings.setSuffixDateFormat(value);
                Rxml.readNext();
             }
+            else if(Rxml.name() == "createDateBasedFolder")
+            {
+                QString value = Rxml.readElementText();
+//               qDebug() <<"hasSuffixDate " << value;
+               this->fileCopySettings.setCreateDateBasedFolder(value.toInt());
+               Rxml.readNext();
+            }
+            else if(Rxml.name() == "dateBasedFolderFormat")
+            {
+                QString value = Rxml.readElementText();
+//               qDebug() <<"suffixDateFormat " << value;
+               this->fileCopySettings.setDateBasedFolderFormat(value);
+               Rxml.readNext();
+            }
             else if(Rxml.name() == "suffixAfterDateTime")
             {
                 QString value = Rxml.readElementText();
@@ -169,6 +202,8 @@ void ProjectConfiguration::openFromFile(QString filename)
         Msgbox.setText(msg);
         Msgbox.exec();
     }
+    else
+        setCurrentProjectFileName(filename);
 
 }
 QStringList ProjectConfiguration::getWatchedFileList()
@@ -186,4 +221,21 @@ void ProjectConfiguration::setFileCopySettings(FileCopySettings settings)
 void ProjectConfiguration::setWatchedFileList(QStringList fileList)
 {
     watchedFileList = fileList;
+}
+
+QString ProjectConfiguration::getCurrentProjectFileName()
+{
+    return currentProjectFileName;
+}
+void ProjectConfiguration::setCurrentProjectFileName(QString filename)
+{
+    currentProjectFileName = filename;
+}
+int ProjectConfiguration::getSavingTimeDelay()
+{
+    return savingTimeDelay;
+}
+void ProjectConfiguration::setSavingTimeDelay(int msec)
+{
+    savingTimeDelay = msec;
 }
