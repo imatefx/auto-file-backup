@@ -276,12 +276,12 @@ bool AutoFileBackup::addNewWatchFile(QString file)
      QList<QString> OldWatchedFiles;
     // Adds the path to the fileMonitor only if it exists, does not adds if it is already there.
 
-    qDebug() << "-----------------------------------------------------------------------------------------------------------";
+//    qDebug() << "-----------------------------------------------------------------------------------------------------------";
 
-     qDebug() << "Outer       " + file;
+//     qDebug() << "Outer       " + file;
     foreach (QString var, watchedFiles)
     {
-        qDebug() << "WatchedFiles                " + var;
+//        qDebug() /*<*/< "WatchedFiles                " + var;
     }
 
 
@@ -292,11 +292,11 @@ bool AutoFileBackup::addNewWatchFile(QString file)
         QFileInfo watchedFileInfo(file);
         folderMonitor->addPath(watchedFileInfo.absoluteDir().path());
 
-        qDebug() << "Inner              " + file;
+//        qDebug() << "Inner              " + file;
 
         if(!watchedFiles.contains(file))
         {
-            qDebug() << "Inner Not Contains              " + file;
+//            qDebug() << "Inner Not Contains              " + file;
             insertToWatchTable(file);
             watchedFiles.append(file);
         }
@@ -346,25 +346,25 @@ bool AutoFileBackup::copyFileAsBackup(QString sourceFile,QString destinationDir,
 }
 
 
-void AutoFileBackup::on_saveToDiffDirCheckBox_stateChanged(int arg1)
-{
-    ui->saveToSubDirLineEdit->setEnabled(!arg1);
-    ui->destinationDirLineEdit->setEnabled(arg1);
-    ui->destinationDirBrowseButton->setEnabled(arg1);
+//void AutoFileBackup::on_saveToDiffDirCheckBox_stateChanged(int arg1)
+//{
+//    ui->saveToSubDirLineEdit->setEnabled(!arg1);
+//    ui->destinationDirLineEdit->setEnabled(arg1);
+//    ui->destinationDirBrowseButton->setEnabled(arg1);
 
-//    if(arg1==0)
-//    {
-//        ui->saveToSubDirLineEdit->setEnabled(true);
-//        ui->destinationDirLineEdit->setEnabled(false);
-//        ui->destinationDirBrowseButton->setEnabled(false);
-//    }
-//    else if(arg1==2)
-//    {
-//        ui->saveToSubDirLineEdit->setEnabled(false);
-//        ui->destinationDirLineEdit->setEnabled(true);
-//        ui->destinationDirBrowseButton->setEnabled(true);
-//    }
-}
+////    if(arg1==0)
+////    {
+////        ui->saveToSubDirLineEdit->setEnabled(true);
+////        ui->destinationDirLineEdit->setEnabled(false);
+////        ui->destinationDirBrowseButton->setEnabled(false);
+////    }
+////    else if(arg1==2)
+////    {
+////        ui->saveToSubDirLineEdit->setEnabled(false);
+////        ui->destinationDirLineEdit->setEnabled(true);
+////        ui->destinationDirBrowseButton->setEnabled(true);
+////    }
+//}
 
 void AutoFileBackup::on_suffixDateTimeCheckBox_stateChanged(int arg1)
 {
@@ -388,13 +388,13 @@ void AutoFileBackup::on_destinationDirBrowseButton_clicked()
     ui->destinationDirLineEdit->setText(saveDir);
 }
 
-void AutoFileBackup::on_fileCopyButtonBox_clicked(QAbstractButton *button)
-{
-//    if (button->text() == tr("Apply"))
-//        saveFileCopySettings();
-//    else if (button->text() == tr("Discard"))
-//        loadFileCopySettings();
-}
+//void AutoFileBackup::on_fileCopyButtonBox_clicked(QAbstractButton *button)
+//{
+////    if (button->text() == tr("Apply"))
+////        saveFileCopySettings();
+////    else if (button->text() == tr("Discard"))
+////        loadFileCopySettings();
+//}
 
 void AutoFileBackup::resetFileCopySettings()
 {

@@ -36,13 +36,13 @@ private slots:
 
     void delayedFileChanged();
 
-    void on_saveToDiffDirCheckBox_stateChanged(int arg1);
+//    void on_saveToDiffDirCheckBox_stateChanged(int arg1);
 
     void on_suffixDateTimeCheckBox_stateChanged(int arg1);
 
     void on_destinationDirBrowseButton_clicked();
 
-    void on_fileCopyButtonBox_clicked(QAbstractButton *button);
+//    void on_fileCopyButtonBox_clicked(QAbstractButton *button);
 
     void on_watchedFilesTableWidget_dropped(const QMimeData *mimeData);
 
