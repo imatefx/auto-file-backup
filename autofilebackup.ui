@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>486</width>
-    <height>602</height>
+    <height>504</height>
    </rect>
   </property>
   <property name="font">
@@ -122,7 +122,7 @@
        <item>
         <widget class="QGroupBox" name="groupBox_5">
          <property name="title">
-          <string>logs - behind the scenes</string>
+          <string>logs</string>
          </property>
          <layout class="QVBoxLayout" name="verticalLayout_13">
           <item>
@@ -328,30 +328,6 @@
                   </item>
                   <item row="3" column="1">
                    <widget class="QLineEdit" name="suffixAfterDateTimeLineEdit"/>
-                  </item>
-                 </layout>
-                </item>
-                <item>
-                 <layout class="QHBoxLayout" name="horizontalLayout_4">
-                  <item>
-                   <widget class="QLabel" name="sampleTextLabel">
-                    <property name="text">
-                     <string>Preview file path</string>
-                    </property>
-                   </widget>
-                  </item>
-                  <item>
-                   <widget class="QPushButton" name="previewButton">
-                    <property name="sizePolicy">
-                     <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
-                      <horstretch>0</horstretch>
-                      <verstretch>0</verstretch>
-                     </sizepolicy>
-                    </property>
-                    <property name="text">
-                     <string>Preview</string>
-                    </property>
-                   </widget>
                   </item>
                  </layout>
                 </item>

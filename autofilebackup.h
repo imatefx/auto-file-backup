@@ -56,8 +56,6 @@ private slots:
 
     void on_createDateFolderCheckBox_stateChanged(int arg1);
 
-    void on_previewButton_clicked();
-
     void on_saveProjectAsButton_clicked();
 
     void on_isSavingToDifferentFolderRadioButton_toggled(bool checked);

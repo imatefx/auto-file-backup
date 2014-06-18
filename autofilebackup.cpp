@@ -593,44 +593,6 @@ void AutoFileBackup::on_createDateFolderCheckBox_stateChanged(int arg1)
     ui->dateFolderFormatLineEdit->setEnabled(arg1);
 }
 
-void AutoFileBackup::on_previewButton_clicked()
-{
-    
-    QString saveDir;
-    QString prefixString;
-    QString suffixString;
-    QString suffixDate;
-
-    QString suffixAfterDateTime;
-    QString dateFolder;
-
-
-    prefixString = ui->filePrefixLineEdit->text();
-    suffixString = ui->fileSuffixLineEdit->text();
-    suffixDate =  ui->suffixDateTimeCheckBox->checkState();
-
-    suffixAfterDateTime = ui->suffixAfterDateTimeLineEdit->text();
-
-    QDir rt;
-
-    if (ui->createDateFolderCheckBox->checkState()==Qt::Checked)
-        dateFolder = QDateTime::currentDateTime().toString(ui->dateFolderFormatLineEdit->text());
-    else
-        dateFolder="";
-
-    if (ui->suffixDateTimeCheckBox->checkState()==Qt::Checked)
-        suffixDate = QDateTime::currentDateTime().toString(ui->suffixDateTimeFormatLineEdit->text());
-    else
-        suffixDate="";
-
-    saveDir = rt.homePath() + rt.separator() + dateFolder + rt.separator() + prefixString + "filename" + suffixString + suffixDate + suffixAfterDateTime + ".txt" ;
-
-    ui->sampleTextLabel->setText(saveDir);
-
-    
-    
-    
-}
 
 void AutoFileBackup::on_saveProjectAsButton_clicked()
 {
