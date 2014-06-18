@@ -20,6 +20,7 @@ void ProjectConfiguration::saveToFile(QString filename)
      xmlWriter.writeStartElement("AutoFileBackup");
 
      xmlWriter.writeStartElement("WatchedFileList");
+     watchedFileList.clear();
      foreach (QString watchedFile, watchedFileList)
      {
          xmlWriter.writeTextElement("File", watchedFile);
@@ -52,7 +53,7 @@ void ProjectConfiguration::saveToFile(QString filename)
      setCurrentProjectFileName(filename);
      qDebug() <<"Saved";
 }
-void ProjectConfiguration::openFromFile(QString filename)
+bool ProjectConfiguration::openFromFile(QString filename)
 {
     QXmlStreamReader Rxml;
 
@@ -63,10 +64,11 @@ void ProjectConfiguration::openFromFile(QString filename)
         QString msg = "Error: Cannot read file " + filename + ": " + file.errorString();
         Msgbox.setText(msg);
         Msgbox.exec();
+        return false;
     }
     Rxml.setDevice(&file);
     Rxml.readNext();
-
+    watchedFileList.clear();
     while(!Rxml.atEnd())
     {
         Rxml.readNext();
@@ -194,6 +196,7 @@ void ProjectConfiguration::openFromFile(QString filename)
         QString msg = "Error: Failed to parse file " + filename + ": " + Rxml.errorString();
         Msgbox.setText(msg);
         Msgbox.exec();
+        return false;
     }
     else if (file.error() != QFile::NoError)
     {
@@ -201,10 +204,13 @@ void ProjectConfiguration::openFromFile(QString filename)
         QString msg ="Error: Cannot read file " + filename +  ": " + file.errorString();
         Msgbox.setText(msg);
         Msgbox.exec();
+        return false;
     }
     else
+    {
         setCurrentProjectFileName(filename);
-
+        return true;
+    }
 }
 QStringList ProjectConfiguration::getWatchedFileList()
 {

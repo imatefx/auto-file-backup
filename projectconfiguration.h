@@ -14,7 +14,7 @@ QString currentProjectFileName;
 public:
     ProjectConfiguration();
     void saveToFile(QString filename);
-    void openFromFile(QString filename);
+    bool openFromFile(QString filename);
     void setWatchedFileList(QStringList fileList);
     void setFileCopySettings(FileCopySettings settings);
     void setSavingTimeDelay(int msec);

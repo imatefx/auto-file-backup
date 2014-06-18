@@ -279,10 +279,10 @@ bool AutoFileBackup::addNewWatchFile(QString file)
 //    qDebug() << "-----------------------------------------------------------------------------------------------------------";
 
 //     qDebug() << "Outer       " + file;
-    foreach (QString var, watchedFiles)
-    {
-//        qDebug() /*<*/< "WatchedFiles                " + var;
-    }
+//    foreach (QString var, watchedFiles)
+//    {
+//        qDebug() << "WatchedFiles                " + var;
+//    }
 
 
     if(fileMonitor->addPath(file))
@@ -485,10 +485,11 @@ void AutoFileBackup::on_saveProjectButton_clicked()
     if(projectConfg.getCurrentProjectFileName().isEmpty())
     {
         QString savefilename= QFileDialog::getSaveFileName(this,"Save AutoFileBackup Project", ".", "Project files (*.afb)");
-        projectConfg.saveToFile(savefilename + ".afb");
+        projectConfg.saveToFile(savefilename);
     }
     else
         projectConfg.saveToFile(projectConfg.getCurrentProjectFileName());
+    ui->openedProjectFileLabel->setText(projectConfg.getCurrentProjectFileName());
 
 }
 
@@ -497,19 +498,35 @@ void AutoFileBackup::on_openProjectButton_clicked()
      QString fileName = QFileDialog::getOpenFileName(this, tr("Open File"),"", tr("Files (*.afb)"));
      if (!fileName.isEmpty())
      {
-         projectConfg.openFromFile(fileName);
-         foreach(QString watchFile ,projectConfg.getWatchedFileList())
+         if(projectConfg.openFromFile(fileName))
          {
-             addNewWatchFile(watchFile);
+
+             folderMonitor = new QFileSystemWatcher(this);
+             fileMonitor = new QFileSystemWatcher(this);
+             watchedFiles.clear();
+//             qDebug() << ui->watchedFilesTableWidget->rowCount();
+             clearFileMonitorTable();
+             foreach(QString watchFile ,projectConfg.getWatchedFileList())
+             {
+                 addNewWatchFile(watchFile);
+             }
+             ui->savingTimeDelaySpinBox->setValue(projectConfg.getSavingTimeDelay());
+             setFileCopySettings(projectConfg.getFileCopySettings());
+             ui->openedProjectFileLabel->setText(projectConfg.getCurrentProjectFileName());
          }
-         ui->savingTimeDelaySpinBox->setValue(projectConfg.getSavingTimeDelay());
-          setFileCopySettings(projectConfg.getFileCopySettings());
+         else
+             ui->openedProjectFileLabel->setText("Error opening file.");
      }
 
 //          qDebug() <<p.getFileCopySettings().getPrefixString();
 }
 
-
+void AutoFileBackup::clearFileMonitorTable()
+{
+    for (int var = ui->watchedFilesTableWidget->rowCount();  var > 0; var--) {
+        ui->watchedFilesTableWidget->removeRow(var - 1);
+    }
+}
 
 
 void AutoFileBackup::changeEvent(QEvent *event)
@@ -600,7 +617,8 @@ void AutoFileBackup::on_saveProjectAsButton_clicked()
     projectConfg.setFileCopySettings(getFileCopySettings());
     projectConfg.setWatchedFileList(watchedFiles);
     QString savefilename= QFileDialog::getSaveFileName(this,"Save AutoFileBackup Project", ".", "Project files (*.afb)");
-    projectConfg.saveToFile(savefilename + ".afb");
+    projectConfg.saveToFile(savefilename);
+    ui->openedProjectFileLabel->setText(projectConfg.getCurrentProjectFileName());
 
 }
 

@@ -72,6 +72,7 @@ private:
     void setFileCopySettings(FileCopySettings fcSettings);
     void insertToWatchTable(QString file);
     void setDropOverlay();
+    void clearFileMonitorTable();
 
 //    // Tray Icon Functions
     void createTrayActions();
