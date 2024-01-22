@@ -41,3 +41,26 @@ As its name suggests, AutoFileBackup can automate the process of backing up file
 The content is copied from a review done by Mihaela Citea on May 2nd, 2014 at [Softpedia.com]
 
 [Softpedia.com]:http://www.softpedia.com/get/System/Back-Up-and-Recovery/AutoFileBackup.shtml
+
+
+## Screenshots
+![AutoFileBackup_1](https://github.com/imatefx/auto-file-backup/assets/3025904/8ae0d725-cf48-43cd-8e2b-03ce36d05f65)
+![AutoFileBackup_2](https://github.com/imatefx/auto-file-backup/assets/3025904/00196c42-eae7-4bfa-89fe-839e5a4a7141)
+![9350eddf74710a0e791469895bfb3e1910743app3](https://github.com/imatefx/auto-file-backup/assets/3025904/325cd071-7133-4fbc-bc83-013350719847)
+![3965eddf74710a0e791469895bfb3e1910741app1](https://github.com/imatefx/auto-file-backup/assets/3025904/6f5c1fa4-c87f-471d-bbf4-5aff8964fd7c)
+![3125eddf74710a0e791469895bfb3e1910742app2](https://github.com/imatefx/auto-file-backup/assets/3025904/09446bf8-0010-4be6-a6c0-de7f8c990c9a)
+![1_1](https://github.com/imatefx/auto-file-backup/assets/3025904/e3c9e55d-f7e9-49ba-a54c-151a8b0df6ae)
+![1](https://github.com/imatefx/auto-file-backup/assets/3025904/227c5c2d-2228-4218-9b6e-b3f6be1487d3)
+
+
+
+
+
+
+
+
+
+
+
+
+
